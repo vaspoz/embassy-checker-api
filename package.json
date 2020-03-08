@@ -1,0 +1,28 @@
+{
+  "name": "embassy-checker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vaspoz/embassy-checker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vaspoz/embassy-checker/issues"
+  },
+  "homepage": "https://github.com/vaspoz/embassy-checker#readme",
+  "dependencies": {
+    "@google-cloud/vision": "^1.10.0",
+    "fetch": "^1.1.0",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "node-fetch": "^2.6.0",
+    "node-html-parser": "^1.2.10",
+    "request": "^2.88.2"
+  }
+}
