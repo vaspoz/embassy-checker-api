@@ -1,4 +1,5 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('components/puppeteer');
+const visionAPI = require('./index');
 
 (async () => {
     const browser = await puppeteer.launch({headless: false});
@@ -12,28 +13,26 @@ const puppeteer = require('puppeteer');
     // await page.waitForSelector("#ctl00_MainContent_txtUniqueID");   //24E6A7C7
     // await page.waitForSelector("#ctl00_MainContent_txtCode");
 
-//  how to click: await page.$eval('.foo', e => e.click());
-
-    // page.$eval('a', e=> e.click());
-
-    let arrMainLinks = (await page.$$('a'))[0];   //get the main links
-    // arrMainLinks[0].click({delay:300});
-    console.log(arrMainLinks.length); // 16
-
+    let enterSiteLink = (await page.$$('a'))[0];   //get the main links
 
     await Promise.all([
         page.waitForNavigation(),
-        arrMainLinks.click({delay: 100})
+        enterSiteLink.click({delay: 100})
     ]);
-
 
     // let's get the sub links
-    let arrSubLinks = (await page.$$('#LinkButtonB'))[0];
+    let changeTimeButton = (await page.$$('#LinkButtonB'))[0];
 
     await Promise.all([
         page.waitForNavigation(),
-        arrSubLinks.click({delay: 100})
+        changeTimeButton.click({delay: 100})
     ]);
+
+    await page.evaluate((a, b) => {
+        document.querySelector('#ctl00_MainContent_txtID').value = a;
+        document.querySelector('#ctl00_MainContent_txtUniqueID').value = b;
+        // document.querySelector('#c').click();
+    }, '38704', '24E6A7C7');
 
     await browser.close();
 })();
