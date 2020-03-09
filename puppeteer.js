@@ -4,51 +4,36 @@ const puppeteer = require('puppeteer');
     const browser = await puppeteer.launch({headless: false});
 
     const page = await browser.newPage();
-    let url = "http://hague.kdmid.ru/queue/queuechng.aspx?ac=chng";
-
-    console.log(`Fetching page data for : ${url}...`);
+    let url2 = "http://hague.kdmid.ru/queue/queuechng.aspx?ac=chng";
+    let url = "http://hague.kdmid.ru/";
 
     await page.goto(url);
-    await page.waitForSelector("#ctl00_MainContent_txtID");         //38704
-    await page.waitForSelector("#ctl00_MainContent_txtUniqueID");   //24E6A7C7
-    await page.waitForSelector("#ctl00_MainContent_txtCode");
+    // await page.waitForSelector("#ctl00_MainContent_txtID");         //38704
+    // await page.waitForSelector("#ctl00_MainContent_txtUniqueID");   //24E6A7C7
+    // await page.waitForSelector("#ctl00_MainContent_txtCode");
 
 //  how to click: await page.$eval('.foo', e => e.click());
 
-    let arrMainLinks: ElementHandle[] = await page.$$('.item.col-xs-3 > a');   //get the main links
+    // page.$eval('a', e=> e.click());
 
+    let arrMainLinks = (await page.$$('a'))[0];   //get the main links
+    // arrMainLinks[0].click({delay:300});
     console.log(arrMainLinks.length); // 16
 
 
-    for (let mainLink of arrMainLinks) //foreach main link let's click it
-    {
-        let hrefValue =await (await mainLink.getProperty('href')).jsonValue();
-        console.log("Clicking on " + hrefValue);
-        await Promise.all([
-            page.waitForNavigation(),
-            mainLink.click({delay: 100})
-        ]);
+    await Promise.all([
+        page.waitForNavigation(),
+        arrMainLinks.click({delay: 100})
+    ]);
 
-        // let's get the sub links
-        let arrSubLinks: ElementHandle[] = await page.$$('.slide >a');
 
-        //let's click on each sub click
-        for (let sublink of arrSubLinks)
-        {
-            console.log('██AAA');
+    // let's get the sub links
+    let arrSubLinks = (await page.$$('#LinkButtonB'))[0];
 
-            await Promise.all([
-                page.waitForNavigation(),
-                sublink.click({delay: 100})
-            ]);
-            console.log('██BBB');
-
-            // await page.goBack()
-            break;
-        }
-        break;
-
-    }
+    await Promise.all([
+        page.waitForNavigation(),
+        arrSubLinks.click({delay: 100})
+    ]);
 
     await browser.close();
 })();
