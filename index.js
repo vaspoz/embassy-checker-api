@@ -37,6 +37,10 @@ request.get(path, function (error, response, body) {
 
 
 /*
+(function(){var script = document.createElement("script"); script.setAttribute("src", "https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"); script.addEventListener('load', function() { var script = document.createElement("script"); document.body.appendChild(script); console.log('jQuery injected');}, false); document.body.appendChild(script)})()
+
+
 $("#ctl00_MainContent_txtID").val('38704');
 $("#ctl00_MainContent_txtUniqueID").val('24E6A7C7');
+
 */
