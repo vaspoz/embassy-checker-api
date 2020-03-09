@@ -1,38 +1,34 @@
 const http = require('http');
 const fetch = require('node-fetch');
-const request = require('request').defaults({ encoding: null });
+const request = require('request').defaults({encoding: null});
 const fs = require('fs');
 const vision = require('@google-cloud/vision');
 
 const path = 'http://hague.kdmid.ru/queue/CodeImage.aspx?id=c646';
 request.get(path, function (error, response, body) {
-    let data;
-    if (!error && response.statusCode === 200) {
-        data = "data:" + response.headers["content-type"] + ";base64," + new Buffer.from(body).toString('base64');
-        let base64Image = data.split(';base64,').pop();
+    let base64Image = new Buffer.from(body).toString('base64');
 
-        fs.writeFile('magicNumbers.png', base64Image, {encoding: 'base64'}, function(err) {
+    fs.writeFile('magicNumbers.png', base64Image, {encoding: 'base64'}, function (err) {
 
 
-            async function quickstart() {
-                // Creates a client
-                const client = new vision.ImageAnnotatorClient();
+        async function quickstart() {
+            // Creates a client
+            const client = new vision.ImageAnnotatorClient();
 
-                const fileName = 'magicNumbers.png';
+            const fileName = 'magicNumbers.png';
 
-                // Performs text detection on the local file
-                const [result] = await client.textDetection(fileName);
-                const detections = result.textAnnotations;
-                console.log(detections[0].description);
-                // console.log('Text:');
-                // detections.forEach(text => console.log(text));
-            }
+            // Performs text detection on the local file
+            const [result] = await client.textDetection(fileName);
+            const detections = result.textAnnotations;
+            console.log(detections[0].description);
+            // console.log('Text:');
+            // detections.forEach(text => console.log(text));
+        }
 
-            quickstart();
+        quickstart();
 
-        });
+    });
 
-    }
 });
 
 
