@@ -1,4 +1,4 @@
-const puppeteer = require('components/puppeteer');
+const puppeteer = require('puppeteer');
 const visionAPI = require('./index');
 
 (async () => {
@@ -31,8 +31,19 @@ const visionAPI = require('./index');
     await page.evaluate((a, b) => {
         document.querySelector('#ctl00_MainContent_txtID').value = a;
         document.querySelector('#ctl00_MainContent_txtUniqueID').value = b;
-        // document.querySelector('#c').click();
     }, '38704', '24E6A7C7');
+
+    const imgPart = (await page.$$eval('#ctl00_MainContent_imgSecNum', imgs => imgs.map(img => img.getAttribute('src'))))[0];
+
+    await visionAPI(`http://hague.kdmid.ru/queue/${imgPart}`, (number) => {
+        console.log('nmber = ' + number);
+        (async () => {
+            await page.evaluate((a) => {
+                document.querySelector('#ctl00_MainContent_txtCode').value = a;
+                console.log(a);
+            }, number);
+        })();
+    });
 
     await browser.close();
 })();
