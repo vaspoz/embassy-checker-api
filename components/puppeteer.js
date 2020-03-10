@@ -3,6 +3,7 @@ const visionAPI = require('./visionAPI');
 const Clipper = require('image-clipper');
 const Canvas = require('canvas');
 const scrShot = require('desktop-screenshot');
+const bird = require('./messageBird');
 
 (async () => {
     const input_id = '38704';
@@ -52,6 +53,16 @@ const setMagicNumbers = (page) => {
             await clickButton('#ctl00_MainContent_ButtonA', page)();
             await clickCheckbox('#ctl00_MainContent_CheckBoxList1_0', page)();
             await clickButton('#ctl00_MainContent_ButtonQueue', page)();
+
+            const element = (await page.$$("label[for='ctl00_MainContent_RadioButtonList1_0'"))[0];
+            page.evaluate(element => {
+                return element.innerText
+            }, element).then(text => {
+                let firstPossibleDate = text.split(' ')[0];
+                console.log('first possible date is: ' + firstPossibleDate);
+            })
+
+            // bird('Parsing is done');
         })();
     }
 };
