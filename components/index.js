@@ -2,7 +2,7 @@ const request = require('request').defaults({encoding: null});
 const fs = require('fs');
 const vision = require('@google-cloud/vision');
 
-module.exports = (path, callback) => {
+module.exports.fromLink = (path, callback) => {
 
     if (!path) {
         path = 'http://hague.kdmid.ru/queue/CodeImage.aspx?id=c646';
@@ -21,4 +21,13 @@ module.exports = (path, callback) => {
                 });
         });
     });
+};
+
+module.exports.fromFile = (fileName, callback) => {
+    const client = new vision.ImageAnnotatorClient();
+
+    client.textDetection(fileName)
+        .then(([result]) => {
+            callback(result.textAnnotations[0].description);
+        });
 };

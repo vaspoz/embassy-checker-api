@@ -18,12 +18,18 @@
   "homepage": "https://github.com/vaspoz/embassy-checker#readme",
   "dependencies": {
     "@google-cloud/vision": "^1.10.0",
+    "canvas": "^2.6.1",
+    "desktop-screenshot": "^0.1.1",
     "fetch": "^1.1.0",
     "fs": "0.0.1-security",
     "http": "0.0.0",
+    "image-clipper": "^0.4.4",
     "node-fetch": "^2.6.0",
     "node-html-parser": "^1.2.10",
+    "node-phantom": "^0.2.5",
     "puppeteer": "^2.1.1",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "system": "^2.0.1",
+    "webpage": "^0.3.0"
   }
 }
