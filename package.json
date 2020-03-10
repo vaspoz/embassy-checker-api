@@ -2,7 +2,7 @@
   "name": "embassy-checker",
   "version": "1.0.0",
   "description": "",
-  "main": "components/index.js",
+  "main": "components/visionAPI.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,6 +24,7 @@
     "fs": "0.0.1-security",
     "http": "0.0.0",
     "image-clipper": "^0.4.4",
+    "messagebird": "^3.4.0",
     "node-fetch": "^2.6.0",
     "node-html-parser": "^1.2.10",
     "node-phantom": "^0.2.5",

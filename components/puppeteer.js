@@ -1,17 +1,15 @@
 const puppeteer = require('puppeteer');
-const visionAPI = require('./index');
+const visionAPI = require('./visionAPI');
 const Clipper = require('image-clipper');
 const Canvas = require('canvas');
 const scrShot = require('desktop-screenshot');
 
 (async () => {
-
     const input_id = '38704';
     const input_code = '24E6A7C7';
 
     const magicNumbersPath = 'components/images/magicNumbers.png';
     const tempScreenShot = 'components/images/screenshot.png';
-
 
     const browser = await puppeteer.launch({headless: false});
 
@@ -19,24 +17,6 @@ const scrShot = require('desktop-screenshot');
     let url = "http://hague.kdmid.ru/queue/queuechng.aspx?ac=chng";
 
     await page.goto(url);
-    // await page.waitForSelector("#ctl00_MainContent_txtID");         //38704
-    // await page.waitForSelector("#ctl00_MainContent_txtUniqueID");   //24E6A7C7
-    // await page.waitForSelector("#ctl00_MainContent_txtCode");
-
-    // let enterSiteLink = (await page.$$('a'))[0];   //get the main links
-    //
-    // await Promise.all([
-    //     page.waitForNavigation(),
-    //     enterSiteLink.click({delay: 100})
-    // ]);
-
-    // let's get the sub links
-    // let changeTimeButton = (await page.$$('#LinkButtonB'))[0];
-    //
-    // await Promise.all([
-    //     page.waitForNavigation(),
-    //     changeTimeButton.click({delay: 100})
-    // ]);
 
     await page.evaluate((a, b) => {
         document.querySelector('#ctl00_MainContent_txtID').value = a;
