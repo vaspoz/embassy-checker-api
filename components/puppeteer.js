@@ -69,26 +69,9 @@ const setMagicNumbers = (page) => {
                 console.log(a);
             }, number);
 
-            const nextPageButton = (await page.$$('#ctl00_MainContent_ButtonA'))[0];
-
-            await Promise.all([
-                page.waitForNavigation(),
-                nextPageButton.click({delay: 100})
-            ]);
-
-            const firstCheckbox = (await page.$$('#ctl00_MainContent_CheckBoxList1_0'))[0];
-
-            await Promise.all([
-                page.waitForNavigation(),
-                firstCheckbox.click()
-            ]);
-
-            const firstButton = (await page.$$('#ctl00_MainContent_ButtonQueue'))[0];
-
-            await Promise.all([
-                page.waitForNavigation(),
-                firstButton.click({delay: 3000})
-            ]);
+            await clickButton('#ctl00_MainContent_ButtonA', page)();
+            await clickCheckbox('#ctl00_MainContent_CheckBoxList1_0', page)();
+            await clickButton('#ctl00_MainContent_ButtonQueue', page)();
         })();
     }
 };
@@ -99,7 +82,17 @@ const clickButton = (selector, page) => {
 
         await Promise.all([
             page.waitForNavigation(),
-            element.click({delay: 3000})
+            element.click({delay: 100})
         ]);
     }
-}
+};
+
+const clickCheckbox = (selector, page) => {
+    return async () => {
+        const element = (await page.$$(selector))[0];
+
+        await Promise.all([
+            element.click({delay: 100})
+        ]);
+    }
+};
