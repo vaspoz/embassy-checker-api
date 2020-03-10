@@ -5,43 +5,44 @@ const Canvas = require('canvas');
 const scrShot = require('desktop-screenshot');
 const bird = require('./messageBird');
 
-(async () => {
-    const input_id = '38704';
-    const input_code = '24E6A7C7';
+module.exports = () => {
+    (async () => {
+        const input_id = '38704';
+        const input_code = '24E6A7C7';
 
-    const magicNumbersPath = 'components/images/magicNumbers.png';
-    const tempScreenShot = 'components/images/screenshot.png';
+        const magicNumbersPath = 'components/images/magicNumbers.png';
+        const tempScreenShot = 'components/images/screenshot.png';
 
-    const browser = await puppeteer.launch({headless: false});
+        const browser = await puppeteer.launch({headless: false});
 
-    const page = await browser.newPage();
-    let url = "http://hague.kdmid.ru/queue/queuechng.aspx?ac=chng";
+        const page = await browser.newPage();
+        let url = "http://hague.kdmid.ru/queue/queuechng.aspx?ac=chng";
 
-    await page.goto(url);
+        await page.goto(url);
 
-    await page.evaluate((a, b) => {
-        document.querySelector('#ctl00_MainContent_txtID').value = a;
-        document.querySelector('#ctl00_MainContent_txtUniqueID').value = b;
-    }, input_id, input_code);
+        await page.evaluate((a, b) => {
+            document.querySelector('#ctl00_MainContent_txtID').value = a;
+            document.querySelector('#ctl00_MainContent_txtUniqueID').value = b;
+        }, input_id, input_code);
 
-    const imgPart = (await page.$$eval('#ctl00_MainContent_imgSecNum', imgs => imgs.map(img => img.getAttribute('src'))))[0];
-    const link = `http://hague.kdmid.ru/queue/${imgPart}`;
-    console.log(link);
+        const imgPart = (await page.$$eval('#ctl00_MainContent_imgSecNum', imgs => imgs.map(img => img.getAttribute('src'))))[0];
+        const link = `http://hague.kdmid.ru/queue/${imgPart}`;
+        console.log(link);
 
-    scrShot("components/images/screenshot.png", () => {
-        console.log("Screen-shot succeeded");
+        scrShot("components/images/screenshot.png", () => {
+            console.log("Screen-shot succeeded");
 
-        Clipper(tempScreenShot, {canvas: Canvas}, function () {
-            this.crop(770, 1270, 300, 100)
-                .toFile(magicNumbersPath, function () {
-                    visionAPI.fromFile(magicNumbersPath, setMagicNumbers(page));
-                });
+            Clipper(tempScreenShot, {canvas: Canvas}, function () {
+                this.crop(770, 1270, 300, 100)
+                    .toFile(magicNumbersPath, function () {
+                        visionAPI.fromFile(magicNumbersPath, setMagicNumbers(page, browser));
+                    });
+            });
         });
-    });
-    // await browser.close();
-})();
+    })();
+};
 
-const setMagicNumbers = (page) => {
+const setMagicNumbers = (page, browser) => {
     return (number) => {
         console.log('nmber = ' + number);
         (async () => {
@@ -55,14 +56,18 @@ const setMagicNumbers = (page) => {
             await clickButton('#ctl00_MainContent_ButtonQueue', page)();
 
             const element = (await page.$$("label[for='ctl00_MainContent_RadioButtonList1_0'"))[0];
-            page.evaluate(element => {
+            await page.evaluate(element => {
                 return element.innerText
             }, element).then(text => {
                 let firstPossibleDate = text.split(' ')[0];
                 console.log('first possible date is: ' + firstPossibleDate);
-            })
 
-            // bird('Parsing is done');
+                bird('First possible date is: ' + firstPossibleDate);
+
+            });
+
+            await browser.close();
+
         })();
     }
 };
