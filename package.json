@@ -24,6 +24,7 @@
     "fs": "0.0.1-security",
     "http": "0.0.0",
     "image-clipper": "^0.4.4",
+    "jimp": "^0.9.5",
     "messagebird": "^3.4.0",
     "node-fetch": "^2.6.0",
     "node-html-parser": "^1.2.10",
@@ -31,6 +32,7 @@
     "puppeteer": "^2.1.1",
     "request": "^2.88.2",
     "system": "^2.0.1",
-    "webpage": "^0.3.0"
+    "webpage": "^0.3.0",
+    "webshot": "^0.18.0"
   }
 }
