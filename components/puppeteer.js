@@ -1,11 +1,8 @@
 const puppeteer = require('puppeteer');
 const visionAPI = require('./visionAPI');
-const Clipper = require('image-clipper');
-const Canvas = require('canvas');
-const scrShot = require('desktop-screenshot');
-const bird = require('./messageBird');
+const Jimp = require('jimp');
 
-module.exports = () => {
+module.exports = (setEarliestDateCallback) => {
     (async () => {
         const input_id = '38704';
         const input_code = '24E6A7C7';
@@ -20,29 +17,28 @@ module.exports = () => {
 
         await page.goto(url);
 
+        await page.screenshot({path: tempScreenShot});
+
         await page.evaluate((a, b) => {
             document.querySelector('#ctl00_MainContent_txtID').value = a;
             document.querySelector('#ctl00_MainContent_txtUniqueID').value = b;
         }, input_id, input_code);
 
-        const imgPart = (await page.$$eval('#ctl00_MainContent_imgSecNum', imgs => imgs.map(img => img.getAttribute('src'))))[0];
-        const link = `http://hague.kdmid.ru/queue/${imgPart}`;
-        console.log(link);
-
-        scrShot("components/images/screenshot.png", () => {
-            console.log("Screen-shot succeeded");
-
-            Clipper(tempScreenShot, {canvas: Canvas}, function () {
-                this.crop(770, 1270, 300, 100)
-                    .toFile(magicNumbersPath, function () {
-                        visionAPI.fromFile(magicNumbersPath, setMagicNumbers(page, browser));
-                    });
+        Jimp.read(tempScreenShot)
+            .then(lenna => {
+                console.log('Start cropping..');
+                return lenna
+                    .crop(350, 450, 170, 50)    //770, 1270, 300, 100 (for mac)
+                    .write(magicNumbersPath); // save
+            })
+            .then(() => {
+                visionAPI.fromFile(magicNumbersPath, setMagicNumbers(page, browser, setEarliestDateCallback));
             });
-        });
+
     })();
 };
 
-const setMagicNumbers = (page, browser) => {
+const setMagicNumbers = (page, browser, setEarliestDateCallback) => {
     return (number) => {
         console.log('nmber = ' + number);
         (async () => {
@@ -61,8 +57,7 @@ const setMagicNumbers = (page, browser) => {
             }, element).then(text => {
                 let firstPossibleDate = text.split(' ')[0];
                 console.log('first possible date is: ' + firstPossibleDate);
-
-                bird('First possible date is: ' + firstPossibleDate);
+                setEarliestDateCallback(firstPossibleDate);
 
             });
 

@@ -1,3 +1,5 @@
 const scrapper = require('./puppeteer');
 
-scrapper();
+scrapper((date) => {
+    console.log(date);
+});
