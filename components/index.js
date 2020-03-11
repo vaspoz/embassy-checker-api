@@ -6,9 +6,6 @@ let hoursDelay = 0.5;
 
 let earliestDate = new Date('2020-12-26');
 
-// just a first run:
-scrapper(setEarliestDate);
-
 (function myLoop(i) {
     setTimeout(function () {
         scrapper(setEarliestDate);
@@ -36,3 +33,6 @@ const setEarliestDate = (dateString) => {
     }
     console.log('------------------------------------------')
 };
+
+// just a first run:
+scrapper(setEarliestDate);
