@@ -47,7 +47,7 @@ const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCall
             wrongNumberCallback(number);
             return;
         }
-        console.log('nmber = ' + number);
+        console.log('magic number = ' + number);
         (async () => {
             await page.evaluate((a) => {
                 document.querySelector('#ctl00_MainContent_txtCode').value = a;
@@ -57,19 +57,16 @@ const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCall
             let result;
             result = await clickButton('#ctl00_MainContent_ButtonA', page, exceptionHandling)();
             if (!result) {
-                console.log('result: ' + result);
                 await browser.close();
                 return;
             }
             result = await clickCheckbox('#ctl00_MainContent_CheckBoxList1_0', page, exceptionHandling)();
             if (!result) {
-                console.log('result: ' + result);
                 await browser.close();
                 return;
             }
             result = await clickButton('#ctl00_MainContent_ButtonQueue', page, exceptionHandling)();
             if (!result) {
-                console.log('result: ' + result);
                 await browser.close();
                 return;
             }
@@ -79,7 +76,6 @@ const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCall
                 return element.innerText
             }, element).then(text => {
                 let firstPossibleDate = text.split(' ')[0];
-                console.log('first possible date is: ' + firstPossibleDate);
                 setEarliestDateCallback(firstPossibleDate);
             });
 

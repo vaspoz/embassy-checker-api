@@ -7,9 +7,12 @@ let hoursDelay = 0.5;
 let earliestDate = new Date('2020-12-26');
 
 (function myLoop(i) {
-    setTimeout(function () {
+    setTimeout(() => {
+        console.log();
+        console.log();
         console.log('====  Start New Iteration  ====');
         console.log('Current datetime:\t\t' + new Date());
+        console.log('Current earliest date:\t\t' + consoleOutDate(earliestDate));
         scrapper(setEarliestDate, handleWrongParsing, exceptionHandling);
         if (--i) myLoop(i);
         }, hoursDelay * 60 * 60 * 1000)
@@ -18,16 +21,13 @@ let earliestDate = new Date('2020-12-26');
 
 const setEarliestDate = (dateString) => {
     // dateString = '26.06.2020'
-    console.log('Current earliest date:\t\t\t' + earliestDate);
-    console.log();
-    console.log('Received date(before typisation):\t' + dateString);
+    console.log('Received date:\t\t' + dateString);
     let stringTokens = dateString.split('.');
     let receivedDate = new Date(`${stringTokens[2]}-${stringTokens[1]}-${stringTokens[0]}`);
-    console.log('Received date(after typisation):\t' + receivedDate);
 
     if (receivedDate < earliestDate) {
         earliestDate = receivedDate;
-        console.log('\r\nGotcha!\r\nReceived date is before\r\nthan saved earliest date.\r\nUpdating the date to:\t' + earliestDate);
+        console.log('\r\nGotcha!\r\nReceived date is before\r\nthan saved earliest date.\r\nUpdating the date to:\t' + consoleOutDate(earliestDate));
         bird('Master, I found a new earliest date: ' + dateString);
     } else {
         console.log('Received date is later than saved earliest date. Do nothing.');
@@ -41,8 +41,12 @@ const exceptionHandling = (exceptionString) => {
 };
 
 const handleWrongParsing = (number) => {
-    console.log('Quality of Image was bad, thus parsing failed [' + number + ']. I will retry it again.');
+    console.log('[ERROR] Quality of Image was bad, thus parsing failed [' + number + ']. I will retry it again.');
     scrapper(setEarliestDate, handleWrongParsing, exceptionHandling);
+};
+
+const consoleOutDate = (datestr) => {
+    return datestr.getDate() + '.' + (datestr.getMonth() + 1) + '.' + datestr.getFullYear();
 };
 
 // just a first run:
