@@ -10,7 +10,7 @@ let earliestDate = new Date('2020-12-26');
     setTimeout(function () {
         console.log('====  Start New Iteration  ====');
         console.log('Current datetime:\t\t' + new Date());
-        scrapper(setEarliestDate, handleWrongParsing);
+        scrapper(setEarliestDate, handleWrongParsing, exceptionHandling);
         if (--i) myLoop(i);
         }, hoursDelay * 60 * 60 * 1000)
 })(20);
@@ -35,10 +35,15 @@ const setEarliestDate = (dateString) => {
     console.log('====  Stop iteration  ====');
 };
 
+const exceptionHandling = (exceptionString) => {
+    console.log('Exception had occurred: ' + exceptionString + '\r\nI will retry it again');
+    scrapper(setEarliestDate, handleWrongParsing, exceptionHandling);
+};
+
 const handleWrongParsing = (number) => {
     console.log('Quality of Image was bad, thus parsing failed [' + number + ']. I will retry it again.');
-    scrapper(setEarliestDate, handleWrongParsing);
+    scrapper(setEarliestDate, handleWrongParsing, exceptionHandling);
 };
 
 // just a first run:
-scrapper(setEarliestDate, handleWrongParsing);
+scrapper(setEarliestDate, handleWrongParsing, exceptionHandling);
