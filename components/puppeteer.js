@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const visionAPI = require('./visionAPI');
 const Jimp = require('jimp');
 
-module.exports = (setEarliestDateCallback, wrongNumberCallback) => {
+module.exports = (setEarliestDateCallback, wrongNumberCallback, exceptionHandling) => {
     (async () => {
         const input_id = '38704';
         const input_code = '24E6A7C7';
@@ -33,13 +33,13 @@ module.exports = (setEarliestDateCallback, wrongNumberCallback) => {
                     .write(magicNumbersPath); // save
             })
             .then(() => {
-                visionAPI.fromFile(magicNumbersPath, setMagicNumbers(page, browser, setEarliestDateCallback, wrongNumberCallback));
+                visionAPI.fromFile(magicNumbersPath, setMagicNumbers(page, browser, setEarliestDateCallback, wrongNumberCallback,exceptionHandling));
             });
 
     })();
 };
 
-const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCallback) => {
+const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCallback, exceptionHandling) => {
     return (number) => {
         number = number.substr(0,6);
         if (!validateRecognizedDigits(number)) {
@@ -54,9 +54,22 @@ const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCall
                 console.log(a);
             }, number);
 
-            await clickButton('#ctl00_MainContent_ButtonA', page)();
-            await clickCheckbox('#ctl00_MainContent_CheckBoxList1_0', page)();
-            await clickButton('#ctl00_MainContent_ButtonQueue', page)();
+            let result;
+            result = await clickButton('#ctl00_MainContent_ButtonA', page, exceptionHandling)();
+            if (!result) {
+                await browser.close();
+                return;
+            }
+            result = await clickCheckbox('#ctl00_MainContent_CheckBoxList1_0', page, exceptionHandling)();
+            if (!result) {
+                await browser.close();
+                return;
+            }
+            result = await clickButton('#ctl00_MainContent_ButtonQueue', page, exceptionHandling)();
+            if (!result) {
+                await browser.close();
+                return;
+            }
 
             const element = (await page.$$("label[for='ctl00_MainContent_RadioButtonList1_0'"))[0];
             await page.evaluate(element => {
@@ -65,7 +78,6 @@ const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCall
                 let firstPossibleDate = text.split(' ')[0];
                 console.log('first possible date is: ' + firstPossibleDate);
                 setEarliestDateCallback(firstPossibleDate);
-
             });
 
             await browser.close();
@@ -74,24 +86,31 @@ const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCall
     }
 };
 
-const clickButton = (selector, page) => {
+const clickButton = (selector, page, exceptionHandling) => {
     return async () => {
         const element = (await page.$$(selector))[0];
 
         await Promise.all([
             page.waitForNavigation(),
             element.click({delay: 100})
-        ]);
+        ]).catch((error) => {
+            exceptionHandling(error);
+            return false;
+        });
     }
 };
 
-const clickCheckbox = (selector, page) => {
+const clickCheckbox = (selector, page, exceptionHandling) => {
     return async () => {
         const element = (await page.$$(selector))[0];
 
         await Promise.all([
             element.click({delay: 100})
-        ]);
+        ]).catch((error) => {
+                exceptionHandling(error);
+                return false;
+            }
+        );
     }
 };
 
