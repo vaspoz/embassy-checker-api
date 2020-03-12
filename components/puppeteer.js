@@ -13,6 +13,7 @@ module.exports = (setEarliestDateCallback, wrongNumberCallback) => {
         const browser = await puppeteer.launch({headless: false});
 
         const page = await browser.newPage();
+        await page.setDefaultNavigationTimeout(0);
         let url = "http://hague.kdmid.ru/queue/queuechng.aspx?ac=chng";
 
         await page.goto(url);
