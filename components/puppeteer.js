@@ -40,6 +40,7 @@ module.exports = (setEarliestDateCallback, wrongNumberCallback) => {
 
 const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCallback) => {
     return (number) => {
+        number = number.substr(0,6);
         if (!validateRecognizedDigits(number)) {
             browser.close();
             wrongNumberCallback(number);
