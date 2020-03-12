@@ -33,7 +33,7 @@ module.exports = (setEarliestDateCallback, wrongNumberCallback, exceptionHandlin
                     .write(magicNumbersPath); // save
             })
             .then(() => {
-                visionAPI.fromFile(magicNumbersPath, setMagicNumbers(page, browser, setEarliestDateCallback, wrongNumberCallback,exceptionHandling));
+                visionAPI.fromFile(magicNumbersPath, setMagicNumbers(page, browser, setEarliestDateCallback, wrongNumberCallback, exceptionHandling));
             });
 
     })();
@@ -41,7 +41,7 @@ module.exports = (setEarliestDateCallback, wrongNumberCallback, exceptionHandlin
 
 const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCallback, exceptionHandling) => {
     return (number) => {
-        number = number.substr(0,6);
+        number = number.substr(0, 6);
         if (!validateRecognizedDigits(number)) {
             browser.close();
             wrongNumberCallback(number);
@@ -57,16 +57,19 @@ const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCall
             let result;
             result = await clickButton('#ctl00_MainContent_ButtonA', page, exceptionHandling)();
             if (!result) {
+                console.log('result: ' + result);
                 await browser.close();
                 return;
             }
             result = await clickCheckbox('#ctl00_MainContent_CheckBoxList1_0', page, exceptionHandling)();
             if (!result) {
+                console.log('result: ' + result);
                 await browser.close();
                 return;
             }
             result = await clickButton('#ctl00_MainContent_ButtonQueue', page, exceptionHandling)();
             if (!result) {
+                console.log('result: ' + result);
                 await browser.close();
                 return;
             }
@@ -94,9 +97,11 @@ const clickButton = (selector, page, exceptionHandling) => {
             page.waitForNavigation(),
             element.click({delay: 100})
         ]).catch((error) => {
+            console.log(error);
             exceptionHandling(error);
             return false;
         });
+        return true;
     }
 };
 
@@ -107,10 +112,12 @@ const clickCheckbox = (selector, page, exceptionHandling) => {
         await Promise.all([
             element.click({delay: 100})
         ]).catch((error) => {
+                console.log(error);
                 exceptionHandling(error);
                 return false;
             }
         );
+        return true;
     }
 };
 
