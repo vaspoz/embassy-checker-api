@@ -8,6 +8,8 @@ let earliestDate = new Date('2020-12-26');
 
 (function myLoop(i) {
     setTimeout(function () {
+        console.log('====  Start New Iteration  ====');
+        console.log('Current datetime:\t\t' + new Date());
         scrapper(setEarliestDate, handleWrongParsing);
         if (--i) myLoop(i);
         }, hoursDelay * 60 * 60 * 1000)
@@ -32,6 +34,7 @@ const setEarliestDate = (dateString) => {
         console.log('Received date is later than saved earliest date. Do nothing.');
     }
     console.log('------------------------------------------')
+    console.log('====  Stop iteration  ====');
 };
 
 const handleWrongParsing = (number) => {
