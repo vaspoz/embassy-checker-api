@@ -18,7 +18,6 @@ let earliestDate = new Date('2020-12-26');
 
 const setEarliestDate = (dateString) => {
     // dateString = '26.06.2020'
-    console.log('------------------------------------------');
     console.log('Current earliest date:\t\t\t' + earliestDate);
     console.log();
     console.log('Received date(before typisation):\t' + dateString);
@@ -33,7 +32,6 @@ const setEarliestDate = (dateString) => {
     } else {
         console.log('Received date is later than saved earliest date. Do nothing.');
     }
-    console.log('------------------------------------------')
     console.log('====  Stop iteration  ====');
 };
 
