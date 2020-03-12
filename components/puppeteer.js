@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const visionAPI = require('./visionAPI');
 const Jimp = require('jimp');
 
-module.exports = (setEarliestDateCallback) => {
+module.exports = (setEarliestDateCallback, wrongNumberCallback) => {
     (async () => {
         const input_id = '38704';
         const input_code = '24E6A7C7';
@@ -32,14 +32,19 @@ module.exports = (setEarliestDateCallback) => {
                     .write(magicNumbersPath); // save
             })
             .then(() => {
-                visionAPI.fromFile(magicNumbersPath, setMagicNumbers(page, browser, setEarliestDateCallback));
+                visionAPI.fromFile(magicNumbersPath, setMagicNumbers(page, browser, setEarliestDateCallback, wrongNumberCallback));
             });
 
     })();
 };
 
-const setMagicNumbers = (page, browser, setEarliestDateCallback) => {
+const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCallback) => {
     return (number) => {
+        if (!validateRecognizedDigits(number)) {
+            browser.close();
+            wrongNumberCallback(number);
+            return;
+        }
         console.log('nmber = ' + number);
         (async () => {
             await page.evaluate((a) => {
@@ -86,4 +91,9 @@ const clickCheckbox = (selector, page) => {
             element.click({delay: 100})
         ]);
     }
+};
+
+const validateRecognizedDigits = (strNumber) => {
+    let numbers = /^[0-9]+$/;
+    return !!((strNumber.match(numbers)) && (strNumber.length === 6));
 };

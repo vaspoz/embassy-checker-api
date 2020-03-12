@@ -8,7 +8,7 @@ let earliestDate = new Date('2020-12-26');
 
 (function myLoop(i) {
     setTimeout(function () {
-        scrapper(setEarliestDate);
+        scrapper(setEarliestDate, handleWrongParsing);
         if (--i) myLoop(i);
         }, hoursDelay * 60 * 60 * 1000)
 })(20);
@@ -34,5 +34,10 @@ const setEarliestDate = (dateString) => {
     console.log('------------------------------------------')
 };
 
+const handleWrongParsing = (number) => {
+    console.log('Quality of Image was bad, thus parsing failed [' + number + ']. I will retry it again.');
+    scrapper(setEarliestDate, handleWrongParsing);
+};
+
 // just a first run:
-scrapper(setEarliestDate);
+scrapper(setEarliestDate, handleWrongParsing);
