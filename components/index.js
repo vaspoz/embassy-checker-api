@@ -8,16 +8,16 @@ let earliestDate = new Date('2020-12-26');
 
 (function myLoop(i) {
     setTimeout(() => {
+        dailyReport();
         console.log();
         console.log();
         console.log('====  Start New Iteration  ====');
         console.log('Current datetime:\t\t' + new Date());
         console.log('Current earliest date:\t\t' + consoleOutDate(earliestDate));
         scrapper(setEarliestDate, handleWrongParsing, exceptionHandling);
-        if (--i) myLoop(i);
+        myLoop(i);
         }, hoursDelay * 60 * 60 * 1000)
-})(20);
-
+})();
 
 const setEarliestDate = (dateString) => {
     // dateString = '26.06.2020'
@@ -47,6 +47,18 @@ const handleWrongParsing = (number) => {
 
 const consoleOutDate = (datestr) => {
     return datestr.getDate() + '.' + (datestr.getMonth() + 1) + '.' + datestr.getFullYear();
+};
+
+const dailyReport = () => {
+    let currDate = new Date();
+    let hour = currDate.getHours();
+    let minutes = currDate.getMinutes();
+
+    if (hour === 22 && minutes <= 30) {
+        bird("Daily report. Earliest date found today is [" + consoleOutDate(earliestDate) + "]");
+    }
+    console.log(hour);
+    console.log(minutes);
 };
 
 // just a first run:
