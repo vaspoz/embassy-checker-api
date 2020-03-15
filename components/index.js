@@ -57,8 +57,6 @@ const dailyReport = () => {
     if (hour === 22 && minutes <= 30) {
         bird("Daily report. Earliest date found today is [" + consoleOutDate(earliestDate) + "]");
     }
-    console.log(hour);
-    console.log(minutes);
 };
 
 // just a first run:
