@@ -25,14 +25,24 @@ const setEarliestDate = (dateString) => {
     let stringTokens = dateString.split('.');
     let receivedDate = new Date(`${stringTokens[2]}-${stringTokens[1]}-${stringTokens[0]}`);
 
-    if (receivedDate < earliestDate) {
+    if (datesNotTheSame(receivedDate, earliestDate)) {
         earliestDate = receivedDate;
-        console.log('\r\nGotcha!\r\nReceived date is before\r\nthan saved earliest date.\r\nUpdating the date to:\t' + consoleOutDate(earliestDate));
-        bird('Master, I found a new earliest date: ' + dateString);
+        if (receivedDate < earliestDate) {
+            console.log('\r\nGotcha!\r\nReceived date is before\r\nthan saved earliest date.\r\nUpdating the date to:\t' + consoleOutDate(earliestDate));
+            bird('Master, I found a new earliest date: ' + dateString);
+        } else  {
+            console.log('New date is after saved earliest date.\r\nSomeone\'s picked it up. Shifting next available date to:\t' + consoleOutDate(earliestDate));
+        }
     } else {
         console.log('Received date is later than saved earliest date. Do nothing.');
     }
     console.log('====  Stop iteration  ====');
+};
+
+const datesNotTheSame = (date1, date2) => {
+    date1.setHours(0,0,0,0);
+    date2.setHours(0,0,0,0);
+    return date1.getTime() !== date2.getTime();
 };
 
 const exceptionHandling = (exceptionString) => {
