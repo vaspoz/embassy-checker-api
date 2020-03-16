@@ -21,16 +21,19 @@ let earliestDate = new Date('2020-12-26');
 
 const setEarliestDate = (dateString) => {
     // dateString = '26.06.2020'
-    console.log('Received date:\t\t' + dateString);
     let stringTokens = dateString.split('.');
     let receivedDate = new Date(`${stringTokens[2]}-${stringTokens[1]}-${stringTokens[0]}`);
 
+    console.log('Received date:\t\t' + consoleOutDate(receivedDate));
+    console.log('Current earliest date:\t' + consoleOutDate(earliestDate));
+
     if (datesNotTheSame(receivedDate, earliestDate)) {
-        earliestDate = receivedDate;
         if (receivedDate < earliestDate) {
+            earliestDate = receivedDate;
             console.log('\r\nGotcha!\r\nReceived date is before\r\nthan saved earliest date.\r\nUpdating the date to:\t' + consoleOutDate(earliestDate));
             bird('Master, I found a new earliest date: ' + dateString);
         } else  {
+            earliestDate = receivedDate;
             console.log('New date is after saved earliest date.\r\nSomeone\'s picked it up. Shifting next available date to:\t' + consoleOutDate(earliestDate));
         }
     } else {
