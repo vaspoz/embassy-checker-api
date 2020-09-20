@@ -2,10 +2,11 @@ const puppeteer = require('puppeteer');
 const visionAPI = require('./visionAPI');
 const Jimp = require('jimp');
 
-module.exports = (setEarliestDateCallback, wrongNumberCallback, exceptionHandling) => {
+module.exports = (configuration, setEarliestDateCallback, wrongNumberCallback, exceptionHandling) => {
     (async () => {
-        const input_id = '38704';
-        const input_code = '24E6A7C7';
+        const {secretCode, requestID} = configuration;
+        const input_id = requestID;
+        const input_code = secretCode;
 
         const magicNumbersPath = 'components/images/magicNumbers.png';
         const tempScreenShot = 'components/images/screenshot.png';
