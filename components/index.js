@@ -2,6 +2,7 @@ const checkIfNewDateIsAvailableMain = require('./puppeteer');
 const sendSMS = require('./messageBird');
 const config = require('../config.json');
 
+console.log('Checking config... ' + JSON.stringify(config));
 // h * 60 * 60 * 1000
 let hoursDelay = 0.5;
 
@@ -81,7 +82,8 @@ consoleOutDate = (datestr) => {
     return datestr.getDate() + '.' + (datestr.getMonth() + 1) + '.' + datestr.getFullYear();
 };
 
+console.log('Starting the first iteration');
 // just a first run:
-checkIfNewDateIsAvailableMain(setEarliestDate, handleWrongParsing, exceptionHandling);
+checkIfNewDateIsAvailableMain(config, setEarliestDate, handleWrongParsing, exceptionHandling);
 
 mainLoop();

@@ -7,22 +7,29 @@ module.exports = (configuration, setEarliestDateCallback, wrongNumberCallback, e
         const {secretCode, requestID} = configuration;
         const input_id = requestID;
         const input_code = secretCode;
+	console.log('Request ID: ' + requestID);
+	console.log('Secret code: ' + secretCode);
 
         const magicNumbersPath = 'components/images/magicNumbers.png';
         const tempScreenShot = 'components/images/screenshot.png';
 
-        const browser = await puppeteer.launch({headless: false});
+        const browser = await puppeteer.launch({headless: true, ignoreDefaultArgs: ['--disable-extensions']});
 
         const page = await browser.newPage();
-        await page.setDefaultNavigationTimeout(0);
+	
+	console.log('Getting to URL');
+	await page.setDefaultNavigationTimeout(0);
         let url = "http://hague.kdmid.ru/queue/queuechng.aspx?ac=chng";
 
         await page.goto(url);
-
+	console.log('Taking a screenshot');
         await page.screenshot({path: tempScreenShot});
 
+	console.log('Filling in props...');
         await page.evaluate((a, b) => {
-            document.querySelector('#ctl00_MainContent_txtID').value = a;
+	    console.log('Entering ID...');
+	    document.querySelector('#ctl00_MainContent_txtID').value = a;
+	    console.log('Entering Code...');
             document.querySelector('#ctl00_MainContent_txtUniqueID').value = b;
         }, input_id, input_code);
 
@@ -61,26 +68,34 @@ const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCall
                 await browser.close();
                 return;
             }
+	    console.log('We are in the next page already. Selecting first checkbox');
             result = await clickCheckbox('#ctl00_MainContent_CheckBoxList1_0', page, exceptionHandling)();
             if (!result) {
                 await browser.close();
                 return;
             }
+	    console.log('Done, clicking on a buttonQueue');
             result = await clickButton('#ctl00_MainContent_ButtonQueue', page, exceptionHandling)();
             if (!result) {
                 await browser.close();
                 return;
             }
 
-            const element = (await page.$$("label[for='ctl00_MainContent_RadioButtonList1_0'"))[0];
-            await page.evaluate(element => {
-                return element.innerText
-            }, element).then(text => {
-                let firstPossibleDate = text.split(' ')[0];
-                setEarliestDateCallback(firstPossibleDate);
-            });
+	    console.log('Getting the list with RadioButtonList1_0');
+	    try { 
+            	const element = (await page.$$("label[for='ctl00_MainContent_RadioButtonList1_0'"))[0];
+            	await page.evaluate(element => {
+                	return element.innerText
+            	}, element).then(text => {
+                	let firstPossibleDate = text.split(' ')[0];
+                	setEarliestDateCallback(firstPossibleDate);
+            	});
 
-            await browser.close();
+            	await browser.close();
+	    } catch (error) {
+	        console.log('Error: List with dates is not available, will try later');
+	        await browser.close();
+	    }
 
         })();
     }
