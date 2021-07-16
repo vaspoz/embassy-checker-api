@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('NodeJS update') {
       steps {
-        sh 'npm install -g'
+        sh 'npm install'
       }
     }
 
