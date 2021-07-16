@@ -1,7 +1,11 @@
-const config = require('..//config.json');
+var express = require('express');
 
-const {secretCode, requestID} = config;
-console.log(secretCode);
-console.log(requestID);
+var app = express();
 
-console.log(config);
+app.get('/', (req, res) => {
+	res.send('hello world');
+});
+
+app.listen(3000);
+
+module.exports = app;
