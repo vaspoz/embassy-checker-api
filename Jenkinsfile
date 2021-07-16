@@ -9,7 +9,7 @@ pipeline {
 
     stage('pm2 restart') {
       steps {
-        sh 'pm2 restart all'
+        sh 'sudo pm2 restart all'
       }
     }
 
