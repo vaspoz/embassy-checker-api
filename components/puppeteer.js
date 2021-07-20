@@ -7,8 +7,8 @@ module.exports = (configuration, setEarliestDateCallback, wrongNumberCallback, e
         const {secretCode, requestID} = configuration;
         const input_id = requestID;
         const input_code = secretCode;
-	console.log('Request ID: ' + requestID);
-	console.log('Secret code: ' + secretCode);
+	    console.log('Request ID: ' + requestID);
+	    console.log('Secret code: ' + secretCode);
 
         const magicNumbersPath = 'components/images/magicNumbers.png';
         const tempScreenShot = 'components/images/screenshot.png';
@@ -17,19 +17,21 @@ module.exports = (configuration, setEarliestDateCallback, wrongNumberCallback, e
 
         const page = await browser.newPage();
 	
-	console.log('Getting to URL');
-	await page.setDefaultNavigationTimeout(0);
+    	console.log('Getting to URL');
+	    await page.setDefaultNavigationTimeout(0);
         let url = "http://hague.kdmid.ru/queue/queuechng.aspx?ac=chng";
 
         await page.goto(url);
-	console.log('Taking a screenshot');
+        console.log('Taking a screenshot');
         await page.screenshot({path: tempScreenShot});
 
-	console.log('Filling in props...');
+    	console.log('Filling in props...');
         await page.evaluate((a, b) => {
-	    console.log('Entering ID...');
-	    document.querySelector('#ctl00_MainContent_txtID').value = a;
-	    console.log('Entering Code...');
+	    
+            console.log('Entering ID...');
+	        document.querySelector('#ctl00_MainContent_txtID').value = a;
+	    
+            console.log('Entering Code...');
             document.querySelector('#ctl00_MainContent_txtUniqueID').value = b;
         }, input_id, input_code);
 
@@ -68,21 +70,23 @@ const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCall
                 await browser.close();
                 return;
             }
-	    console.log('We are in the next page already. Selecting first checkbox');
+	        
+            console.log('We are in the next page already. Selecting first checkbox');
             result = await clickCheckbox('#ctl00_MainContent_CheckBoxList1_0', page, exceptionHandling)();
             if (!result) {
                 await browser.close();
                 return;
             }
-	    console.log('Done, clicking on a buttonQueue');
+	        
+            console.log('Done, clicking on a buttonQueue');
             result = await clickButton('#ctl00_MainContent_ButtonQueue', page, exceptionHandling)();
             if (!result) {
                 await browser.close();
                 return;
             }
 
-	    console.log('Getting the list with RadioButtonList1_0');
-	    try { 
+	        console.log('Getting the list with RadioButtonList1_0');
+	        try { 
             	const element = (await page.$$("label[for='ctl00_MainContent_RadioButtonList1_0'"))[0];
             	await page.evaluate(element => {
                 	return element.innerText
@@ -92,10 +96,11 @@ const setMagicNumbers = (page, browser, setEarliestDateCallback, wrongNumberCall
             	});
 
             	await browser.close();
-	    } catch (error) {
-	        console.log('Error: List with dates is not available, will try later');
-	        await browser.close();
-	    }
+	        } catch (error) {
+	            console.log('Error: List with dates is not available, will try later');
+                setEarliestDateCallback();
+	            await browser.close();
+	        }
 
         })();
     }
