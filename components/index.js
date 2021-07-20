@@ -1,5 +1,5 @@
 const checkIfNewDateIsAvailableMain = require('./puppeteer');
-const sendSMS = require('./messageBird');
+const publish = require('./publish');
 const config = require('../config.json');
 
 console.log('Checking config... ' + JSON.stringify(config));
@@ -14,7 +14,7 @@ const mainLoop = () => {
         outputNewIterationInfo();
         checkIfNewDateIsAvailableMain(config, setEarliestDate, handleWrongParsing, exceptionHandling);
         mainLoop();
-        }, hoursDelay * 60 * 60 * 1000)
+    }, hoursDelay * 60 * 60 * 1000)
 };
 
 
@@ -26,7 +26,7 @@ sendDailyReportWhenEvening = () => {
     let minutes = currDate.getMinutes();
 
     if (hour === 22 && minutes <= 30) {
-        sendSMS("Daily report. Earliest date found today is [" + consoleOutDate(earliestDate) + "]");
+        publish("Daily report. Earliest date found today is [" + consoleOutDate(earliestDate) + "]");
     }
 };
 
@@ -40,6 +40,13 @@ function outputNewIterationInfo() {
 
 
 setEarliestDate = (dateString) => {
+
+    if (!dateString) {
+        publish('Unfortunately, there are no dates available at the moment. Will retry later.');
+        console.log('====  Stop iteration  ====');
+        return;
+    }
+
     // dateString = '26.06.2020'
     let stringTokens = dateString.split('.');
     let receivedDate = new Date(`${stringTokens[2]}-${stringTokens[1]}-${stringTokens[0]}`);
@@ -51,7 +58,7 @@ setEarliestDate = (dateString) => {
         if (receivedDate < earliestDate) {
             earliestDate = receivedDate;
             console.log('\r\nGotcha!\r\nReceived date is before\r\nthan saved earliest date.\r\nUpdating the date to:\t' + consoleOutDate(earliestDate));
-            sendSMS('Master, I found a new earliest date: ' + dateString);
+            publish('I founded a new earliest date: ' + dateString);
         } else  {
             earliestDate = receivedDate;
             console.log('New date is after saved earliest date.\r\nSomeone\'s picked it up. Shifting next available date to:\t' + consoleOutDate(earliestDate));

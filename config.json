@@ -1,4 +1,6 @@
 {
 	"requestID": "59869",
-	"secretCode": "3DBDED54"
+	"secretCode": "3DBDED54",
+	"sendSMS": false,
+	"redisChannelName": "embassy-updates"
 }
