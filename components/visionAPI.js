@@ -29,10 +29,22 @@ module.exports.fromLink = (link, callback) => {
 	});
 };
 
-module.exports.fromFile = (fileName, callback) => {
+module.exports.fromFile = async (fileName, callback) => {
 	const client = new vision.ImageAnnotatorClient();
 
-	client.textDetection(fileName).then(([result]) => {
-		callback(result.textAnnotations[0].description);
-	});
+	// Delay is needed because the magicNumbers takes time to be written as a file
+	await delay(1000);
+
+	client
+		.textDetection(fileName)
+		.then(([result]) => {
+			callback(result.textAnnotations[0].description);
+		})
+		.catch((error) => {
+			console.log("[ERROR] " + error);
+		});
 };
+
+function delay(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
