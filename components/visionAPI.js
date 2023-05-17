@@ -16,7 +16,10 @@ module.exports.fromLink = (link, callback) => {
 			{ encoding: "base64" },
 			() => {
 				const client = new vision.ImageAnnotatorClient();
-				const fileName = "components/images/magicNumbers.png";
+				const fileName = path.join(
+					__dirname,
+					"images/magicNumbers.png"
+				);
 
 				client.textDetection(fileName).then(([result]) => {
 					callback(result.textAnnotations[0].description);
