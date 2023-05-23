@@ -4,3 +4,5 @@ package-lock.json
 
 *.png
 .vscode/*
+
+embassy-scheduler.json
