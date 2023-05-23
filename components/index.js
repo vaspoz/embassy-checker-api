@@ -6,7 +6,7 @@ console.log("Checking config... " + JSON.stringify(config));
 // h * 60 * 60 * 1000
 let hoursDelay = 0.5;
 
-let earliestDate = new Date("2020-12-26");
+let earliestDate = new Date("2025-12-26");
 process.env.GOOGLE_APPLICATION_CREDENTIALS = "embassy-scheduler.json";
 
 const mainLoop = () => {

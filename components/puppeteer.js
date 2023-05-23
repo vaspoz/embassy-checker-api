@@ -29,6 +29,8 @@ module.exports = (
 
 		const page = await browser.newPage();
 
+		await page.setViewport({ width: 800, height: 600 });
+
 		console.log("Getting to URL");
 		await page.setDefaultNavigationTimeout(0);
 		let url = "http://hague.kdmid.ru/queue/queuechng.aspx?ac=chng";

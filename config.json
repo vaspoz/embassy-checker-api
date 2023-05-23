@@ -1,6 +1,7 @@
 {
-	"requestID": "87132",
-	"secretCode": "4E4755A7",
-	"sendSMS": false,
+	"requestID": "81575",
+	"secretCode": "7E383DAD",
+	"sendSMS": true,
+	"smsRecipients": ["+31638643409"],
 	"redisChannelName": "embassy-updates"
 }
