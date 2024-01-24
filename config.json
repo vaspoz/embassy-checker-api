@@ -1,7 +1,8 @@
 {
-	"requestID": "81575",
-	"secretCode": "7E383DAD",
-	"sendSMS": true,
-	"smsRecipients": ["+31638643409"],
-	"redisChannelName": "embassy-updates"
+    "requestID": "102071",
+    "secretCode": "96F6CF6B",
+    "sendSMS": true,
+    "smsRecipients": ["+31638643409"],
+    "redisChannelName": "embassy-updates",
+    "hoursDelay": 6
 }

@@ -1,40 +1,40 @@
 {
-	"name": "embassy-checker",
-	"version": "1.0.0",
-	"description": "",
-	"main": "components/visionAPI.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/vaspoz/embassy-checker.git"
-	},
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/vaspoz/embassy-checker/issues"
-	},
-	"homepage": "https://github.com/vaspoz/embassy-checker#readme",
-	"dependencies": {
-		"@google-cloud/vision": "^1.10.0",
-		"canvas": "^2.6.1",
-		"desktop-screenshot": "^0.1.1",
-		"express": "^4.17.1",
-		"fetch": "^1.1.0",
-		"fs": "0.0.1-security",
-		"http": "0.0.0",
-		"image-clipper": "^0.4.4",
-		"jimp": "^0.9.5",
-		"messagebird": "^4.0.1",
-		"node-fetch": "^2.6.1",
-		"node-html-parser": "^1.2.10",
-		"node-phantom": "^0.2.5",
-		"puppeteer": "^10.1.0",
-		"redis": "^3.1.2",
-		"request": "^2.88.2",
-		"system": "^2.0.1",
-		"webpage": "^0.3.0",
-		"webshot": "^0.18.0"
-	}
+    "name": "embassy-checker",
+    "version": "1.0.0",
+    "description": "",
+    "main": "components/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vaspoz/embassy-checker.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/vaspoz/embassy-checker/issues"
+    },
+    "homepage": "https://github.com/vaspoz/embassy-checker#readme",
+    "dependencies": {
+        "@google-cloud/vision": "^1.10.0",
+        "canvas": "^2.6.1",
+        "desktop-screenshot": "^0.1.1",
+        "express": "^4.17.1",
+        "fetch": "^1.1.0",
+        "fs": "0.0.1-security",
+        "http": "0.0.0",
+        "image-clipper": "^0.4.4",
+        "jimp": "^0.9.5",
+        "messagebird": "^4.0.1",
+        "node-fetch": "^2.6.1",
+        "node-html-parser": "^1.2.10",
+        "node-phantom": "^0.2.5",
+        "puppeteer": "^10.1.0",
+        "redis": "^3.1.2",
+        "request": "^2.88.2",
+        "system": "^2.0.1",
+        "webpage": "^0.3.0",
+        "webshot": "^0.18.0"
+    }
 }
