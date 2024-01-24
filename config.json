@@ -1,7 +1,8 @@
 {
-	"requestID": "REDACTED",
-	"secretCode": "REDACTED",
-	"sendSMS": true,
-	"smsRecipients": ["REDACTED"],
-	"redisChannelName": "embassy-updates"
+    "requestID": "REDACTED",
+    "secretCode": "REDACTED",
+    "sendSMS": true,
+    "smsRecipients": ["REDACTED"],
+    "redisChannelName": "embassy-updates",
+    "hoursDelay": 6
 }
